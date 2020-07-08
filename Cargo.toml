@@ -1,5 +1,5 @@
 [package]
-name = "adxl_for_rpi"
+name = "adxl345"
 version = "0.0.3"
 authors = ["kjartan"]
 edition = "2018"

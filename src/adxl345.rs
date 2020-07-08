@@ -1,5 +1,5 @@
 #![allow(dead_code)]  //removes some warnings for the user
-
+#![allow(arithmetic_overflow)]
 //use std::error::Error; //Might add in future but is useless for now
 
 use rppal::i2c::I2c;
