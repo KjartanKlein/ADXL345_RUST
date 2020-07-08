@@ -1,8 +1,13 @@
 [package]
-name = "rpi_i2c_adxl"
-version = "0.1.0"
+name = "adxl_for_rpi"
+version = "0.0.2"
 authors = ["kjartan"]
 edition = "2018"
+license = "MIT"
+description = "adxl345 driver for the rpi"
+documentation = "google.com"
+repository = "https://github.com/KjartanKlein/ADXL345_RUST"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
