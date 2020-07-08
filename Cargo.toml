@@ -5,7 +5,7 @@ authors = ["kjartan"]
 edition = "2018"
 license = "MIT"
 description = "adxl345 driver for the rpi"
-documentation = "google.com"
+documentation = "https://google.com"
 repository = "https://github.com/KjartanKlein/ADXL345_RUST"
 
 
