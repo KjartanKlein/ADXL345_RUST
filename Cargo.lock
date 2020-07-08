@@ -2,7 +2,7 @@
 # It is not intended for manual editing.
 [[package]]
 name = "adxl_for_rpi"
-version = "0.0.2"
+version = "0.0.3"
 dependencies = [
  "rppal",
 ]

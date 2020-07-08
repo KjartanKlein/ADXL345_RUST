@@ -1,1 +1,1 @@
-mod adxl345;
+pub mod adxl345;
