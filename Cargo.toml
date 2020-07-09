@@ -1,6 +1,6 @@
 [package]
 name = "adxl345"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["kjartan"]
 edition = "2018"
 license = "MIT"
