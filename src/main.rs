@@ -18,7 +18,11 @@ fn main() {
     println!("Starting mesurements");
     loop{
         accel.get_data_raw();
-        println!("GOT [ {:?} ]",accel.raw_data);
+        println!("GOT raw [ {:?} ]",accel.raw_data);
+        accel.get_data();
+        println!("GOT clean [ {:?} ]",accel.data);
+        accel.rotations();
+        println!("Got rotations[ {} , {} ]",accel.pitch , accel.roll);
         thread::sleep(Duration::from_millis(200));
     }
 }

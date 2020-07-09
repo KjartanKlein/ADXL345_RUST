@@ -1,5 +1,4 @@
 #![allow(dead_code)]  //removes some warnings for the user
-#![allow(arithmetic_overflow)]
 //use std::error::Error; //Might add in future but is useless for now
 
 use rppal::i2c::I2c;
@@ -57,11 +56,13 @@ pub struct Adxl {
     pub overrun: bool,
     pub watermark: bool,
 
-    pub pitch: f32,
-    pub roll: f32,
+    pub pitch: f64,
+    pub roll: f64,
 
 
 }
+
+
 //This part contains all functions for the ACCELEROMETER
 
 impl Adxl {
@@ -164,23 +165,20 @@ impl Adxl {
     }
     pub fn get_data(&mut self){
             self.get_data_raw();
-            let mut low = [0i16;3];
-            low[0] = (self.raw_data[0] & (0xff as u8)) as i16;
-            low[1] = (self.raw_data[2] & (0xff as u8)) as i16;
-            low[2] = (self.raw_data[4] & (0xff as u8)) as i16;
-
-            let mut high = [0i16;3];
-            high[0] = ((self.raw_data[1] >> 8) & (0xff as u8)) as i16;
-            high[1] = ((self.raw_data[3] >> 8) & (0xff as u8)) as i16;
-            high[2] = ((self.raw_data[5] >> 8) & (0xff as u8)) as i16;
-
-            self.data[0] = low[0] | (high[0]>>8);
-            self.data[1] = low[1] | (high[1]>>8);
-            self.data[2] = low[2] | (high[2]>>8);
+            self.data[0] = (self.raw_data[0] as u16  +(self.raw_data[1] as u16).rotate_right(8)) as i16;
+            self.data[1] = (self.raw_data[2] as u16  +(self.raw_data[3] as u16).rotate_right(8)) as i16;
+            self.data[2] = (self.raw_data[4] as u16  +(self.raw_data[5] as u16).rotate_right(8)) as i16;
+    }
+    pub fn rotations(&mut self){
+        let x = self.data[0] as f64;
+        let y = self.data[1] as f64;
+        let z = self.data[2] as f64;
+        self.roll = y.atan2(z)*57.3;
+        self.pitch = -x.atan2((y*y + z*z).sqrt())*57.3;
     }
 
     //uses the block read function from RPPAL to get 3 values of data from the accelerometer
-    //The block read command reads from address OFSX to OFSX + length(self.offsets) -1
+    //The block read command reads from address OFSX to OFSX + length(self.iffsets) -1
     //returns it to the struct
     pub fn get_offsets(&mut self){
         self.adxl.block_read(OFSX,&mut self.offsets).expect("READING OFFSETS FAILED");
@@ -327,7 +325,8 @@ impl Adxl{
     }
 
     pub fn clear_interupt(&mut self){
-        let source:u8 = self._read_cmd(INT_SOURCE);
+        let _source:u8 = self._read_cmd(INT_SOURCE);
+        /*
         self.data_ready = (source>>0b1000000)==1;
         self.tap = (source>>0b0100000)==1;
         self.dtap = (source>>0b0010000)==1;
@@ -335,6 +334,7 @@ impl Adxl{
         self.inact = (source>>0b0000100)==1;
         self.watermark = (source>>0b0000010)==1;
         self.overrun = (source>>0b0000001)==1;
+        */
     }
     pub fn clear_settings(&mut self){
         self.set_tap_threshold(0.0);
